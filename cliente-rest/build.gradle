@@ -1,0 +1,77 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '2.7.18'
+    id 'io.spring.dependency-management' version '1.1.4'
+}
+
+group = 'com.ejercicio'
+version = '0.0.1-SNAPSHOT'
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+
+    compileOnly 'org.projectlombok:lombok:1.18.30'
+    annotationProcessor 'org.projectlombok:lombok:1.18.30'
+
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}
+
+//test {
+//    useJUnitPlatform()
+//
+//    testLogging {
+//        // Muestra los mensajes de System.out y System.err
+//        showStandardStreams = true
+//
+//        // Configura qué eventos quieres ver en la consola
+//        events "passed", "skipped", "failed"
+//
+//        // Para ver los nombres de @DisplayName en la consola
+//        displayGranularity = 2
+//    }
+//
+//    exclude '**/integration/**'
+//}
+//
+//task integrationTest(type: Test) {
+//    useJUnitPlatform()
+//    // Esta tarea solo ejecuta tests de integración
+//    include '**/integration/**'
+//    // Los tests de integración necesitan el servidor levantado
+//    description = 'Ejecuta tests de integración (requiere servidor arriba)'
+//}
+
+test {
+    useJUnitPlatform()
+    exclude '**/integration/**'
+
+    testLogging {
+        events "passed", "failed", "skipped"
+        showStandardStreams = true
+        showExceptions = true
+        displayGranularity = 2
+    }
+}
+
+task integrationTest(type: Test) {
+    useJUnitPlatform()
+    include '**/integration/**'
+    dependsOn testClasses
+    group = 'verification'
+
+    testLogging {
+        events "passed", "failed", "skipped"
+        showStandardStreams = true
+        showExceptions = true
+        displayGranularity = 2
+    }
+}
