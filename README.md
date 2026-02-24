@@ -44,8 +44,6 @@ java {
 
 ---
 
----
-
 ## Arquitectura del Sistema
 
 El proyecto sigue un patrón de **Arquitectura por Capas** (Layered Architecture), asegurando una separación clara de responsabilidades y facilitando el mantenimiento y la escalabilidad del conector.
