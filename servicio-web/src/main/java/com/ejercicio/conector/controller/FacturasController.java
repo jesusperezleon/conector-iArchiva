@@ -2,16 +2,12 @@ package com.ejercicio.conector.controller;
 
 import com.ejercicio.conector.dtos.FacturasProveedorDTO;
 import com.ejercicio.conector.exception.ParametrosInvalidosException;
-import com.ejercicio.conector.models.Factura;
 import com.ejercicio.conector.service.FacturasService;
 import com.ejercicio.conector.utils.CifValidator;
 import com.ejercicio.conector.utils.DateValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.time.LocalDate;
-import java.util.List;
 
 @RestController
 @RequestMapping("/facturas")

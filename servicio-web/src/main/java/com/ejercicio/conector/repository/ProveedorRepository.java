@@ -1,6 +1,6 @@
 package com.ejercicio.conector.repository;
 
-import com.ejercicio.conector.models.Proveedor;
+import com.ejercicio.conector.entity.Proveedor;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

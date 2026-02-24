@@ -1,12 +1,10 @@
 package com.ejercicio.conector.controller;
 
-import com.ejercicio.conector.exception.ModelNotFoundException;
 import com.ejercicio.conector.exception.ParametrosInvalidosException;
-import com.ejercicio.conector.models.Proveedor;
+import com.ejercicio.conector.entity.Proveedor;
 import com.ejercicio.conector.service.ProveedorService;
 import com.ejercicio.conector.utils.CifValidator;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

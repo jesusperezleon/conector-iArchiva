@@ -1,4 +1,4 @@
-package com.ejercicio.conector.models;
+package com.ejercicio.conector.entity;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -15,7 +15,7 @@ public class Proveedor {
     @Column(name = "cif", nullable = false, unique = true)
     @JsonProperty("CIF")
     private String cif;
-    
+
     @Column(name = "nombre", nullable = false)
     private String nombre;
 
@@ -55,5 +55,5 @@ public class Proveedor {
     public void setEmail(String email) {
         this.email = email;
     }
-    
+
 }
