@@ -1,10 +1,10 @@
 # Conector iArchiva
 
-## 📌 Resumen del Enunciado
+## Resumen del Enunciado
 
 El objetivo del ejercicio es desarrollar una solución compuesta por:
 
-### 1️⃣ Creación de un servicio web REST
+### Creación de un servicio web REST
 
 Se implementa un servicio REST con los siguientes endpoints:
 
@@ -13,7 +13,7 @@ Se implementa un servicio REST con los siguientes endpoints:
 | CIF | Nombre, Email y código interno del proveedor |
 | CIF + fechaDesde + fechaHasta | Facturas (número de factura, fecha, importe) del proveedor en ese rango de fechas |
 
-### 2️⃣ Creación de un cliente REST
+### Creación de un cliente REST
 
 Se desarrolla un segundo proyecto que actúa como cliente del servicio anterior e incluye:
 
@@ -22,7 +22,7 @@ Se desarrolla un segundo proyecto que actúa como cliente del servicio anterior 
 
 ---
 
-## ⚙️ Stack Tecnológico
+## Stack Tecnológico
 
 - Java 1.8
 - Spring Boot 2.7.18
