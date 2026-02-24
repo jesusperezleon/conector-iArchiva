@@ -40,3 +40,73 @@ java {
     sourceCompatibility = JavaVersion.VERSION_1_8
     targetCompatibility = JavaVersion.VERSION_1_8
 }
+
+---
+
+## Arquitectura del Sistema
+
+El proyecto sigue un patrón de **Arquitectura por Capas** (Layered Architecture), asegurando una separación clara de responsabilidades y facilitando el mantenimiento y la escalabilidad del conector.
+
+### Capas del Proyecto:
+
+1.  **Capa de Presentación (Controllers):** * Expone los endpoints REST.
+    * Gestiona las peticiones HTTP y valida los parámetros de entrada.
+    * Transforma las Entidades en **DTOs** para asegurar que solo se expone la información necesaria.
+2.  **Capa de Negocio (Services):** * Contiene la lógica principal del conector.
+    * Implementa la lógica de filtrado dinámico para las facturas (manejo de rangos de fechas opcionales).
+3.  **Capa de Persistencia (Repositories):** * Utiliza **Spring Data JPA** para la comunicación con la base de datos.
+    * Implementa consultas derivadas para filtrar por el CIF del proveedor y el rango temporal.
+4.  **Capa de Modelo (Entities/DTOs):** * **Entities:** Mapeo de tablas mediante Hibernate (Proveedor y Factura).
+    * **DTOs:** Objetos de transferencia para desacoplar la API de la estructura interna.
+
+---
+
+## Modelo de Datos: Entidades y Relaciones
+
+La persistencia se gestiona mediante una base de datos **H2** en memoria, ideal para entornos de prueba y desarrollo rápido.
+
+* **Proveedor:** Entidad principal identificada por su **CIF**. 
+    * Atributos: `nombre`, `email`, `codigoInterno`.
+* **Factura:** Entidad relacionada con un proveedor mediante una relación `@ManyToOne`.
+    * Atributos: `numeroFactura`, `fecha`, `importe`.
+
+**Relación:** Un Proveedor puede tener asociadas **N** Facturas (1:N).
+
+---
+
+## Data Transfer Objects (DTOs)
+
+Se han implementado DTOs para evitar la exposición directa de las entidades JPA y prevenir problemas de recursividad en las relaciones:
+* **`ProveedorDTO`**: Devuelve los datos básicos del proveedor tras la consulta por CIF.
+* **`FacturaDTO`**: Devuelve la información formateada de las facturas (número, fecha e importe).
+
+---
+
+## Detalle de Endpoints (Servicio REST)
+
+### 1. Consulta de Proveedor
+* **URL:** `GET /api/proveedores/{cif}`
+* **Descripción:** Recupera los datos básicos de un proveedor.
+* **Salida:** JSON con `nombre`, `email` y `codigoInterno`.
+
+### 2. Consulta de Facturas por Rango
+* **URL:** `GET /api/facturas`
+* **Parámetros:** * `cif` (String) - **Obligatorio**.
+    * `fechaDesde` (LocalDate) - Opcional.
+    * `fechaHasta` (LocalDate) - Opcional.
+* **Lógica:** Si no se proporcionan fechas, el sistema devuelve el histórico completo del proveedor. Si se proporcionan, se aplica un filtro de rango inclusivo.
+
+---
+
+## Pruebas y Cliente REST
+
+Se incluye un segundo proyecto que actúa como **Cliente REST** para validar la integración.
+
+### Pruebas realizadas:
+* **Unitarias (Datos Correctos):** Verificación de flujo positivo, recuperación de proveedores existentes y filtrado correcto de facturas en rangos válidos.
+* **Unitarias (Datos Incorrectos):** Validación de comportamiento ante CIFs inexistentes, formatos de fecha erróneos o parámetros obligatorios ausentes.
+
+### Ejecución de los tests:
+Para ejecutar la suite de pruebas desde la terminal:
+```bash
+./gradlew test
