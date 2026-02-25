@@ -59,7 +59,7 @@ java {
 
 ### Requisitos previos
 - Java 1.8 instalado
-- Gradle instalado (o usar wrapper)
+- No es necesario instalar Gradle (se usa Gradle Wrapper incluido)
 
 ### Clonar el proyecto
 ```bash
@@ -79,7 +79,7 @@ Para compilar el proyecto se debe ejecutar el siguiente comando en la terminal d
 gradlew.bat build
 ```
 
-### Ejecutar el proyecto
+### Levantar el Servicio Web
 Para ejecutar el servicio **(Servicio-Web)**, se debe ejecutar el siguiente comando en la terminal desde la raíz del proyecto.
 #### Linux / macOS
 ```bash
@@ -90,6 +90,14 @@ Para ejecutar el servicio **(Servicio-Web)**, se debe ejecutar el siguiente coma
 ```bash
 gradlew.bat bootRun
 ```
+
+El servicio quedará disponible en:
+
+```bash
+http://localhost:8080
+```
+
+Base de datos: H2 en memoria (no requiere instalación adicional).
 
 ---
 
