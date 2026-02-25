@@ -120,10 +120,9 @@ La persistencia se gestiona mediante una base de datos **H2** en memoria, ideal 
 
 * **Proveedor:** Entidad principal identificada por su **Código de Proveedor**. 
     * Atributos: `codProveedor`, `CIF`, `nombre` y `email`.
-* **Factura:** Entidad que identica una factura mediante **codFactura** y declara una relación con `Proveedor`.
+* **Factura:** Entidad que identica una factura mediante **codFactura** y declara una relación con Proveedor.
     * Atributos: `codFactura`, `proveedor`, `fecha` e `importe`.
-    * La relación con Proveedor se establece mediante `@ManyToOne`
-      y la columna `codProveedor` como Foreign Key.
+    * La relación con Proveedor se establece mediante `@ManyToOne` y la columna `codProveedor` como Foreign Key.
 
 ---
 
@@ -216,10 +215,11 @@ Estas pruebas validan la comunicación real entre el cliente y el servidor, veri
 * **Test 10.** fechaDesde posterior a fechaHasta: lanza IllegalArgumentException.
 
 ### Ejecución de los tests de integración:
-Para ejecutar los test de integración desde la terminal, de igual manera abra la raíz del proyecto y ejecute el siguiente comando:
+Para ejecutar los test de integración desde la terminal, primero de levantar el servidor ya que el cliente intentará comunicarse con el. Después y de igual manera, abra la raíz del proyecto y ejecute el siguiente comando:
 ```bash
 ./gradlew integrationTest
 ```
+⚠️ El servidor debe estar levantado.
 ---
 
 Para ejecutar ambos test de forma simultanea, ejecute el siguiente comando:
