@@ -25,31 +25,6 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 
-//test {
-//    useJUnitPlatform()
-//
-//    testLogging {
-//        // Muestra los mensajes de System.out y System.err
-//        showStandardStreams = true
-//
-//        // Configura qué eventos quieres ver en la consola
-//        events "passed", "skipped", "failed"
-//
-//        // Para ver los nombres de @DisplayName en la consola
-//        displayGranularity = 2
-//    }
-//
-//    exclude '**/integration/**'
-//}
-//
-//task integrationTest(type: Test) {
-//    useJUnitPlatform()
-//    // Esta tarea solo ejecuta tests de integración
-//    include '**/integration/**'
-//    // Los tests de integración necesitan el servidor levantado
-//    description = 'Ejecuta tests de integración (requiere servidor arriba)'
-//}
-
 test {
     useJUnitPlatform()
     exclude '**/integration/**'
