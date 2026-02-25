@@ -60,4 +60,6 @@ public class ProveedorServiceIT {
             proveedorService.obtenerPorCif(cifVacio);
         });
     }
+
+
 }

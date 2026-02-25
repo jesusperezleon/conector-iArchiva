@@ -1,11 +1,15 @@
 package com.ejercicio.cliente_rest.service;
 
-import com.ejercicio.cliente_rest.dto.FacturasProveedorDTO;
+import com.ejercicio.cliente_rest.dto.FacturaDTO;
 import com.ejercicio.cliente_rest.utils.DateValidator;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
+
+import java.util.List;
 
 @Service
 public class FacturaService {
@@ -18,7 +22,7 @@ public class FacturaService {
         this.baseUrl = baseUrl;
     }
 
-    public FacturasProveedorDTO getFacturas(String cif, String fechaDesde, String fechaHasta) {
+    public List<FacturaDTO> getFacturas(String cif, String fechaDesde, String fechaHasta) {
 
         // Validaciones en el cliente antes de llamar al servidor
         if (cif == null || cif.trim().isEmpty())
@@ -47,6 +51,11 @@ public class FacturaService {
             builder.queryParam("fechaHasta", fechaHasta);
 
         String url = builder.toUriString();
-        return restTemplate.getForObject(url, FacturasProveedorDTO.class);
+        return restTemplate.exchange(
+                url,
+                HttpMethod.GET,
+                null,
+                new ParameterizedTypeReference<List<FacturaDTO>>() {}
+        ).getBody();
     }
 }

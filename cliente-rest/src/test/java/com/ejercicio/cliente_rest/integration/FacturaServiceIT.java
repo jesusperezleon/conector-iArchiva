@@ -1,11 +1,13 @@
 package com.ejercicio.cliente_rest.integration;
 
-import com.ejercicio.cliente_rest.dto.FacturasProveedorDTO;
+import com.ejercicio.cliente_rest.dto.FacturaDTO;
 import com.ejercicio.cliente_rest.service.FacturaService;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.web.client.HttpClientErrorException;
+
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -21,7 +23,7 @@ public class FacturaServiceIT {
     @Test
     @DisplayName("Test integración 1. CIF válido sin fechas: retorna facturas")
     void test01_CifValidoSinFechas() {
-        FacturasProveedorDTO resultado = facturaService.getFacturas(CIF_VALIDO, "", "");
+        List<FacturaDTO> resultado = facturaService.getFacturas(CIF_VALIDO, "", "");
         assertNotNull(resultado);
     }
 
@@ -49,21 +51,21 @@ public class FacturaServiceIT {
     @Test
     @DisplayName("Test integración 5. CIF válido con ambas fechas correctas: retorna facturas")
     void test05_AmbasFechasCorrectas() {
-        FacturasProveedorDTO resultado = facturaService.getFacturas(CIF_VALIDO, "2024-01-01", "2024-12-31");
+        List<FacturaDTO> resultado = facturaService.getFacturas(CIF_VALIDO, "2024-01-01", "2024-12-31");
         assertNotNull(resultado);
     }
 
     @Test
     @DisplayName("Test integración 6. Solo fechaDesde: retorna facturas desde esa fecha")
     void test06_SoloFechaDesde() {
-        FacturasProveedorDTO resultado = facturaService.getFacturas(CIF_VALIDO, "2024-01-01", "");
+        List<FacturaDTO> resultado = facturaService.getFacturas(CIF_VALIDO, "2024-01-01", "");
         assertNotNull(resultado);
     }
 
     @Test
     @DisplayName("Test integración 7. Solo fechaHasta: retorna facturas hasta esa fecha")
     void test07_SoloFechaHasta() {
-        FacturasProveedorDTO resultado = facturaService.getFacturas(CIF_VALIDO, "", "2024-12-31");
+        List<FacturaDTO> resultado = facturaService.getFacturas(CIF_VALIDO, "", "2024-12-31");
         assertNotNull(resultado);
     }
 

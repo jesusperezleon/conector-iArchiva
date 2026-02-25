@@ -1,16 +1,19 @@
 package com.ejercicio.cliente_rest.service;
 
 import com.ejercicio.cliente_rest.dto.FacturaDTO;
-import com.ejercicio.cliente_rest.dto.FacturasProveedorDTO;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.Arrays;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -32,35 +35,60 @@ class FacturaServiceTest {
         facturaService = new FacturaService(restTemplate, BASE_URL);
     }
 
+    // Metodo para contruir la respuesta del servidor
+    private void mockRespuesta(String url, List<FacturaDTO> facturas) {
+        when(restTemplate.exchange(
+                eq(BASE_URL + "/facturas" + url),   // ← eq() en lugar de valor directo
+                eq(HttpMethod.GET),
+                eq(null),
+                any(ParameterizedTypeReference.class)))
+                .thenReturn(ResponseEntity.ok(facturas));
+    }
+
+    // Metodo para simular error del servidor
+    private void mockError(String url, HttpStatus status) {
+        when(restTemplate.exchange(
+                eq(BASE_URL + "/facturas" + url),   // ← eq() en lugar de valor directo
+                eq(HttpMethod.GET),
+                eq(null),
+                any(ParameterizedTypeReference.class)))
+                .thenThrow(new HttpClientErrorException(status));
+    }
+
+    // Metodo para construir lista de facturas
+    private List<FacturaDTO> buildFacturas(Long... numeros) {
+        return Arrays.stream(numeros).map(num -> {
+            FacturaDTO f = new FacturaDTO();
+            f.setCod_factura(num);
+            f.setImporte(1000.00);
+            return f;
+        }).collect(java.util.stream.Collectors.toList());
+    }
+
     // --- Casos con CIF ---
 
     @Test
     @DisplayName("Test unitario 1. CIF válido sin fechas: retorna facturas del proveedor")
-    void test1_CifValidoSinFechas() {
-        FacturasProveedorDTO mockResponse = buildResponse(CIF_VALIDO, 4L, 4L);
+    void test01_CifValidoSinFechas() {
+        mockRespuesta("?cif=" + CIF_VALIDO, buildFacturas(4L, 4L));
 
-        when(restTemplate.getForObject(
-                BASE_URL + "/facturas?cif=" + CIF_VALIDO,
-                FacturasProveedorDTO.class))
-                .thenReturn(mockResponse);
-
-        FacturasProveedorDTO resultado = facturaService.getFacturas(CIF_VALIDO, "", "");
+        List<FacturaDTO> resultado = facturaService.getFacturas(CIF_VALIDO, "", "");
 
         assertNotNull(resultado);
-        assertEquals(2, resultado.getFacturas().size());
-        verify(restTemplate, times(1))
-                .getForObject(BASE_URL + "/facturas?cif=" + CIF_VALIDO, FacturasProveedorDTO.class);
+        assertEquals(2, resultado.size());
+        verify(restTemplate, times(1)).exchange(
+                eq(BASE_URL + "/facturas?cif=" + CIF_VALIDO),
+                eq(HttpMethod.GET),
+                eq(null),
+                any(ParameterizedTypeReference.class));
     }
 
     @Test
     @DisplayName("Test unitario 2. CIF inexistente: lanza 404 Not Found")
-    void test2_CifInexistente() {
+    void test02_CifInexistente() {
         String cifFalso = "A00000000";
 
-        when(restTemplate.getForObject(
-                BASE_URL + "/facturas?cif=" + cifFalso,
-                FacturasProveedorDTO.class))
-                .thenThrow(new HttpClientErrorException(HttpStatus.NOT_FOUND));
+        mockError("?cif=" + cifFalso, HttpStatus.NOT_FOUND);
 
         HttpClientErrorException ex = assertThrows(HttpClientErrorException.class,
                 () -> facturaService.getFacturas(cifFalso, "", ""));
@@ -70,13 +98,10 @@ class FacturaServiceTest {
 
     @Test
     @DisplayName("Test unitario 3. CIF con formato inválido: lanza 400 Bad Request")
-    void test3_CifFormatoInvalido() {
+    void test03_CifFormatoInvalido() {
         String cifInvalido = "Z0000X";
 
-        when(restTemplate.getForObject(
-                BASE_URL + "/facturas?cif=" + cifInvalido,
-                FacturasProveedorDTO.class))
-                .thenThrow(new HttpClientErrorException(HttpStatus.BAD_REQUEST));
+        mockError("?cif=" + cifInvalido, HttpStatus.BAD_REQUEST);
 
         HttpClientErrorException ex = assertThrows(HttpClientErrorException.class,
                 () -> facturaService.getFacturas(cifInvalido, "", ""));
@@ -86,7 +111,7 @@ class FacturaServiceTest {
 
     @Test
     @DisplayName("Test unitario 4. CIF vacío: lanza IllegalArgumentException sin llamar al servidor")
-    void test4_CifVacio() {
+    void test04_CifVacio() {
         assertThrows(IllegalArgumentException.class,
                 () -> facturaService.getFacturas("", "", ""));
 
@@ -95,7 +120,7 @@ class FacturaServiceTest {
 
     @Test
     @DisplayName("Test unitario 5. CIF nulo: lanza IllegalArgumentException sin llamar al servidor")
-    void test5_CifNulo() {
+    void test05_CifNulo() {
         assertThrows(IllegalArgumentException.class,
                 () -> facturaService.getFacturas(null, "", ""));
 
@@ -106,61 +131,52 @@ class FacturaServiceTest {
 
     @Test
     @DisplayName("Test unitario 6. CIF válido con ambas fechas correctas: retorna facturas en el rango")
-    void test6_CifValidoConAmbasFechas() {
+    void test06_CifValidoConAmbasFechas() {
         String fechaDesde = "2024-01-01";
         String fechaHasta = "2024-12-31";
-        String url = BASE_URL + "/facturas?cif=" + CIF_VALIDO
+        String url = "?cif=" + CIF_VALIDO
                 + "&fechaDesde=" + fechaDesde
                 + "&fechaHasta=" + fechaHasta;
 
-        FacturasProveedorDTO mockResponse = buildResponse(CIF_VALIDO, 4L);
+        mockRespuesta(url, buildFacturas(4L));
 
-        when(restTemplate.getForObject(url, FacturasProveedorDTO.class))
-                .thenReturn(mockResponse);
-
-        FacturasProveedorDTO resultado = facturaService.getFacturas(CIF_VALIDO, fechaDesde, fechaHasta);
+        List<FacturaDTO> resultado = facturaService.getFacturas(CIF_VALIDO, fechaDesde, fechaHasta);
 
         assertNotNull(resultado);
-        assertEquals(1, resultado.getFacturas().size());
+        assertEquals(1, resultado.size());
     }
 
     @Test
     @DisplayName("Test unitario 7. Solo fechaDesde: retorna facturas desde esa fecha")
-    void test7_SoloFechaDesde() {
+    void test07_SoloFechaDesde() {
         String fechaDesde = "2024-01-01";
-        String url = BASE_URL + "/facturas?cif=" + CIF_VALIDO + "&fechaDesde=" + fechaDesde;
+        String url = "?cif=" + CIF_VALIDO + "&fechaDesde=" + fechaDesde;
 
-        FacturasProveedorDTO mockResponse = buildResponse(CIF_VALIDO, 4L, 4L);
+        mockRespuesta(url, buildFacturas(4L, 4L));
 
-        when(restTemplate.getForObject(url, FacturasProveedorDTO.class))
-                .thenReturn(mockResponse);
-
-        FacturasProveedorDTO resultado = facturaService.getFacturas(CIF_VALIDO, fechaDesde, "");
+        List<FacturaDTO> resultado = facturaService.getFacturas(CIF_VALIDO, fechaDesde, "");
 
         assertNotNull(resultado);
-        assertEquals(2, resultado.getFacturas().size());
+        assertEquals(2, resultado.size());
     }
 
     @Test
     @DisplayName("Test unitario 8. Solo fechaHasta: retorna facturas hasta esa fecha")
-    void test8_SoloFechaHasta() {
+    void test08_SoloFechaHasta() {
         String fechaHasta = "2024-12-31";
-        String url = BASE_URL + "/facturas?cif=" + CIF_VALIDO + "&fechaHasta=" + fechaHasta;
+        String url = "?cif=" + CIF_VALIDO + "&fechaHasta=" + fechaHasta;
 
-        FacturasProveedorDTO mockResponse = buildResponse(CIF_VALIDO, 4L);
+        mockRespuesta(url, buildFacturas(4L, 4L));
 
-        when(restTemplate.getForObject(url, FacturasProveedorDTO.class))
-                .thenReturn(mockResponse);
-
-        FacturasProveedorDTO resultado = facturaService.getFacturas(CIF_VALIDO, "", fechaHasta);
+        List<FacturaDTO> resultado = facturaService.getFacturas(CIF_VALIDO, "", fechaHasta);
 
         assertNotNull(resultado);
-        assertEquals(1, resultado.getFacturas().size());
+        assertEquals(2, resultado.size());
     }
 
     @Test
     @DisplayName("Test unitario 9. Formato de fechaDesde inválido: lanza IllegalArgumentException sin llamar al servidor")
-    void test9_FechaDesdeFormatoInvalido() {
+    void test09_FechaDesdeFormatoInvalido() {
         assertThrows(IllegalArgumentException.class,
                 () -> facturaService.getFacturas(CIF_VALIDO, "01-01-2024", ""));
 
@@ -183,19 +199,5 @@ class FacturaServiceTest {
                 () -> facturaService.getFacturas(CIF_VALIDO, "2024-12-31", "2024-01-01"));
 
         verifyNoInteractions(restTemplate);
-    }
-
-    // --- Método auxiliar para construir respuestas mock ---
-    private FacturasProveedorDTO buildResponse(String cif, Long... numeroFacturas) {
-        FacturasProveedorDTO response = new FacturasProveedorDTO();
-        response.setCif(cif);
-
-        response.setFacturas(Arrays.stream(numeroFacturas).map(num -> {
-            FacturaDTO f = new FacturaDTO();
-            f.setCod_factura(num);
-            f.setImporte(1000.00);
-            return f;
-        }).collect(java.util.stream.Collectors.toList()));
-        return response;
     }
 }
