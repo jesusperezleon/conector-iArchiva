@@ -101,9 +101,9 @@ Se ha implementado un DTO para evitar la exposición directa de las entidades JP
     | Parámetros Enviados | Resultado de la Consulta |
     | :--- | :--- |
     | **Solo CIF** | Devuelve todas las facturas históricas del proveedor. |
-    | **CIF + fechaDesde** | Devuelve las facturas desde esa fecha hasta hoy. |
-    | **CIF + fechaHasta** | Devuelve todas las facturas anteriores a esa fecha. |
-    | **CIF + Desde + Hasta** | Devuelve las facturas en el rango exacto solicitado. |
+    | **CIF + FechaDesde** | Devuelve las facturas desde esa fecha hasta hoy. |
+    | **CIF + FechaHasta** | Devuelve todas las facturas anteriores a esa fecha. |
+    | **CIF + FechaDesde + FechaHasta** | Devuelve las facturas en el rango exacto solicitado. |
 
 ---
 
