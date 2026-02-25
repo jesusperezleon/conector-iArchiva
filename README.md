@@ -72,16 +72,13 @@ La persistencia se gestiona mediante una base de datos **H2** en memoria, ideal 
 * **Proveedor:** Entidad principal identificada por su **Codigo de Proveedor**. 
     * Atributos: `nombre`, `email`, `codigoInterno` y `CIF`.
 * **Factura:** Entidad relacionada con un proveedor mediante una relación `@ManyToOne`.
-    * Atributos: `numeroFactura`, `fecha`, `importe` y `cod_Proveedor` que actua de `Foreing Key` para establecer la relación con una relación muchos a uno con la entidad `Proveeedor`  .
-
-**Relación:** Un Proveedor puede tener asociadas **N** Facturas (1:N).
+    * Atributos: `numeroFactura`, `fecha`, `importe` y `cod_Proveedor` que actua de `Foreing Key` para establecer la relación con una relación muchos a uno con la entidad `Proveeedor`.
 
 ---
 
 ## Data Transfer Objects (DTOs)
 
-Se han implementado DTOs para evitar la exposición directa de las entidades JPA y prevenir problemas de recursividad en las relaciones:
-* **`ProveedorDTO`**: Devuelve los datos básicos del proveedor tras la consulta por CIF.
+Se ha implementado un DTO para evitar la exposición directa de las entidades JPA y prevenir problemas de recursividad en las relaciones:
 * **`FacturaDTO`**: Devuelve la información formateada de las facturas (número, fecha e importe).
 
 ---
@@ -89,16 +86,23 @@ Se han implementado DTOs para evitar la exposición directa de las entidades JPA
 ## Detalle de Endpoints (Servicio REST)
 
 ### 1. Consulta de Proveedor
-* **URL:** `GET /api/proveedores/{cif}`
+* **URL:** `GET /proveedores/{cif}`
 * **Descripción:** Recupera los datos básicos de un proveedor.
-* **Salida:** JSON con `nombre`, `email` y `codigoInterno`.
+* **Salida:** JSON con `nombre`, `email`, `CIF` y `codigoInterno`.
 
 ### 2. Consulta de Facturas por Rango
-* **URL:** `GET /api/facturas`
-* **Parámetros:** * `cif` (String) - **Obligatorio**.
-    * `fechaDesde` (LocalDate) - Opcional.
-    * `fechaHasta` (LocalDate) - Opcional.
-* **Lógica:** Si no se proporcionan fechas, el sistema devuelve el histórico completo del proveedor. Si se proporcionan, se aplica un filtro de rango inclusivo.
+* **URL:** `GET /facturas`
+* **Parámetros:**
+    * `cif` - **Obligatorio**.
+    * `fechaDesde` - Opcional.
+    * `fechaHasta` - Opcional.
+* **Lógica:** Segun los paremetros que se introduzcan se devuelven distintos resultados:
+  | Parámetros Enviados | Resultado de la Consulta |
+| :--- | :--- |
+| **Solo CIF** | Devuelve **todas** las facturas históricas del proveedor. |
+| **CIF + fechaDesde** | Devuelve las facturas desde esa fecha hasta **hoy**. |
+| **CIF + fechaHasta** | Devuelve todas las facturas **anteriores** a esa fecha. |
+| **CIF + Desde + Hasta** | Devuelve las facturas en el **rango exacto** solicitado. |
 
 ---
 
