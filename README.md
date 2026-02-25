@@ -67,12 +67,29 @@ git clone <url>
 cd conector-iArchiva
 ```
 
-### Compilar ambos proyectos 
-
+### Compilar el proyecto
+Para compilar el proyecto se debe de ejecutar el siguiente comando en la terminal desde la raiz del proyecto.
 #### Linux / macOS
-
 ```bash
 ./gradlew build
+```
+
+#### Window (CMD o PowerShell)
+```bash
+gradlew.bat build
+```
+
+### Ejecutar el proyecto
+Para ejecutarlo, se debe de ejecutar el siguiente comando en la terminal desde la raiz del proyecto.
+#### Linux / macOS
+```bash
+./gradlew build
+```
+
+#### Window (CMD o PowerShell)
+```bash
+gradlew.bat build
+```
 
 ---
 
