@@ -97,7 +97,8 @@ Se ha implementado un DTO para evitar la exposición directa de las entidades JP
     * `fechaDesde` - Opcional.
     * `fechaHasta` - Opcional.
 * **Lógica:** Segun los paremetros que se introduzcan se devuelven distintos resultados:
-  | Parámetros Enviados | Resultado de la Consulta |
+  
+| Parámetros Enviados | Resultado de la Consulta |
 | :--- | :--- |
 | **Solo CIF** | Devuelve **todas** las facturas históricas del proveedor. |
 | **CIF + fechaDesde** | Devuelve las facturas desde esa fecha hasta **hoy**. |
