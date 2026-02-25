@@ -1,5 +1,17 @@
 # Conector iArchiva
 
+## 📌 Índice
+1. [Resumen del Enunciado](#resumen-del-enunciado)
+2. [Stack Tecnológico](#stack-tecnológico)
+3. [Arquitectura del Sistema](#arquitectura-del-sistema)
+4. [Modelo de Datos: Entidades y Relaciones](#modelo-de-datos-entidades-y-relaciones)
+5. [Data Transfer Objects (DTOs)](#data-transfer-objects-dtos)
+6. [Detalle de Endpoints (Servicio REST)](#detalle-de-endpoints-servicio-rest)
+7. [Pruebas y Cliente REST](#pruebas-y-cliente-rest)
+8. [Instrucciones de Despliegue](#instrucciones-de-despliegue)
+
+---
+
 ## Resumen del Enunciado
 
 El objetivo del ejercicio es desarrollar una solución compuesta por:
