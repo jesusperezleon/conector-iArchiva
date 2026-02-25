@@ -68,25 +68,25 @@ cd conector-iArchiva
 ```
 
 ### Compilar el proyecto
-Para compilar el proyecto se debe de ejecutar el siguiente comando en la terminal desde la raiz del proyecto.
+Para compilar el proyecto se debe ejecutar el siguiente comando en la terminal desde la raíz del proyecto.
 #### Linux / macOS
 ```bash
 ./gradlew build
 ```
 
-#### Window (CMD o PowerShell)
+#### Windows (CMD o PowerShell)
 ```bash
 gradlew.bat build
 ```
 
 ### Ejecutar el proyecto
-Para ejecutar el servicio **(Servicio-Web)**, se debe de ejecutar el siguiente comando en la terminal desde la raiz del proyecto.
+Para ejecutar el servicio **(Servicio-Web)**, se debe ejecutar el siguiente comando en la terminal desde la raíz del proyecto.
 #### Linux / macOS
 ```bash
 ./gradlew bootRun
 ```
 
-#### Window (CMD o PowerShell)
+#### Windows (CMD o PowerShell)
 ```bash
 gradlew.bat bootRun
 ```
@@ -118,10 +118,12 @@ El proyecto sigue un patrón de **Arquitectura por Capas** (Layered Architecture
 
 La persistencia se gestiona mediante una base de datos **H2** en memoria, ideal para entornos de prueba y desarrollo rápido.
 
-* **Proveedor:** Entidad principal identificada por su **Codigo de Proveedor**. 
+* **Proveedor:** Entidad principal identificada por su **Código de Proveedor**. 
     * Atributos: `codProveedor`, `CIF`, `nombre` y `email`.
-* **Factura:** Entidad relacionada con un proveedor mediante una relación `@ManyToOne`.
-    * Atributos: `numeroFactura`, `fecha`, `importe` y `cod_Proveedor` que actua de `Foreign Key` para establecer la relación con una relación muchos a uno con la entidad `Proveedor`.
+* **Factura:** Entidad que identica una factura mediante **codFactura** y declara una relación con `Proveedor`.
+    * Atributos: `codFactura`, `proveedor`, `fecha` e `importe`.
+    * La relación con Proveedor se establece mediante `@ManyToOne`
+      y la columna `codProveedor` como Foreign Key.
 
 ---
 
@@ -145,7 +147,7 @@ Se ha implementado un DTO para evitar la exposición directa de las entidades JP
     * `cif` - **Obligatorio**.
     * `fechaDesde` - Opcional. El formato debe ser YYYY-MM-DD.
     * `fechaHasta` - Opcional. El formato debe ser YYYY-MM-DD.
-* **Lógica:** Segun los paremetros que se introduzcan se devuelven distintos resultados:
+* **Lógica:** Según los parámetros que se introduzcan se devuelven distintos resultados:
   
     | Parámetros Enviados | Resultado de la Consulta |
     | :--- | :--- |
@@ -185,7 +187,7 @@ Estas pruebas validan la lógica del cliente REST de forma aislada, simulando la
 * **Test 11.** fechaDesde posterior a fechaHasta: lanza IllegalArgumentException sin llamar al servidor.
 
 ### Ejecución de los tests unitarios:
-Para ejecutar los test unitarios desde la terminal, abra el proyecto `cliente-rest` y desde la raíz ejecute el siguinte comando:
+Para ejecutar los test unitarios desde la terminal, abra el proyecto `cliente-rest` y desde la raíz ejecute el siguiente comando:
 ```bash
 ./gradlew test
 ```
@@ -214,7 +216,7 @@ Estas pruebas validan la comunicación real entre el cliente y el servidor, veri
 * **Test 10.** fechaDesde posterior a fechaHasta: lanza IllegalArgumentException.
 
 ### Ejecución de los tests de integración:
-Para ejecutar los test de integracion desde la terminal, de igual manera abra la raiz del proyecto y ejecute el siguiente comando:
+Para ejecutar los test de integración desde la terminal, de igual manera abra la raíz del proyecto y ejecute el siguiente comando:
 ```bash
 ./gradlew integrationTest
 ```
