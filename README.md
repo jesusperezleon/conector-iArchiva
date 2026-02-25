@@ -67,6 +67,13 @@ git clone <url>
 cd conector-iArchiva
 ```
 
+### Compilar ambos proyectos 
+
+#### Linux / macOS
+
+```bash
+./gradlew build
+
 ---
 
 ## Arquitectura del Sistema
