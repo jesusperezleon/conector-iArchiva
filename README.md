@@ -169,6 +169,7 @@ Para ejecutar los test de integracion desde la terminal, de igual manera abra la
 ```bash
 ./gradlew integrationTest
 ```
+---
 
 Para ejecutar ambos test de forma simultanea, ejecute el siguiente comando:
 ```bash
