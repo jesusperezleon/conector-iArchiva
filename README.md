@@ -80,15 +80,15 @@ gradlew.bat build
 ```
 
 ### Ejecutar el proyecto
-Para ejecutarlo, se debe de ejecutar el siguiente comando en la terminal desde la raiz del proyecto.
+Para ejecutar el servicio **(Servicio-Web)**, se debe de ejecutar el siguiente comando en la terminal desde la raiz del proyecto.
 #### Linux / macOS
 ```bash
-./gradlew build
+./gradlew bootRun
 ```
 
 #### Window (CMD o PowerShell)
 ```bash
-gradlew.bat build
+gradlew.bat bootRun
 ```
 
 ---
