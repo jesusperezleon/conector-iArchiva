@@ -3,12 +3,12 @@
 ## 📌 Índice
 1. [Resumen del Enunciado](#resumen-del-enunciado)
 2. [Stack Tecnológico](#stack-tecnológico)
-3. [Arquitectura del Sistema](#arquitectura-del-sistema)
-4. [Modelo de Datos: Entidades y Relaciones](#modelo-de-datos-entidades-y-relaciones)
-5. [Data Transfer Objects (DTOs)](#data-transfer-objects-dtos)
-6. [Detalle de Endpoints (Servicio REST)](#detalle-de-endpoints-servicio-rest)
-7. [Pruebas y Cliente REST](#pruebas-y-cliente-rest)
-8. [Instrucciones de Despliegue](#instrucciones-de-despliegue)
+3. [Instrucciones de Despliegue](#instrucciones-de-despliegue)
+4. [Arquitectura del Sistema](#arquitectura-del-sistema)
+5. [Modelo de Datos: Entidades y Relaciones](#modelo-de-datos-entidades-y-relaciones)
+6. [Data Transfer Objects (DTOs)](#data-transfer-objects-dtos)
+7. [Detalle de Endpoints (Servicio REST)](#detalle-de-endpoints-servicio-rest)
+8. [Pruebas y Cliente REST](#pruebas-y-cliente-rest)
 
 ---
 
@@ -53,6 +53,19 @@ java {
     targetCompatibility = JavaVersion.VERSION_1_8
 }
 ```
+---
+
+## Instrucciones de Despliegue
+
+### Requisitos previos
+- Java 1.8 instalado
+- Gradle instalado (o usar wrapper)
+
+### Clonar el proyecto
+```bash
+git clone <url>
+cd conector-iArchiva
+```
 
 ---
 
@@ -65,13 +78,13 @@ El proyecto sigue un patrón de **Arquitectura por Capas** (Layered Architecture
 1.  **Capa de Presentación (Controllers):**
     * Expone los endpoints REST.
     * Gestiona las peticiones HTTP y valida los parámetros de entrada.
-3.  **Capa de Negocio (Services):**
+2.  **Capa de Negocio (Services):**
     * Contiene la lógica principal del conector.
     * Transforma las Entidades en **DTOs** para asegurar que solo se expone la información necesaria.
-5.  **Capa de Persistencia (Repositories):**
+3.  **Capa de Persistencia (Repositories):**
     * Utiliza **Spring Data JPA** para la comunicación con la base de datos.
     * Implementa consultas derivadas para filtrar por el CIF del proveedor y el rango temporal.
-7.  **Capa de Modelo (Entities/DTOs):**
+4.  **Capa de Modelo (Entities/DTOs):**
     * **Entities:** Mapeo de tablas mediante Hibernate (Proveedor y Factura).
     * **DTOs:** Objetos de transferencia para desacoplar la API de la estructura interna.
 
@@ -82,9 +95,9 @@ El proyecto sigue un patrón de **Arquitectura por Capas** (Layered Architecture
 La persistencia se gestiona mediante una base de datos **H2** en memoria, ideal para entornos de prueba y desarrollo rápido.
 
 * **Proveedor:** Entidad principal identificada por su **Codigo de Proveedor**. 
-    * Atributos: `nombre`, `email`, `codigoInterno` y `CIF`.
+    * Atributos: `codProveedor`, `CIF`, `nombre` y `email`.
 * **Factura:** Entidad relacionada con un proveedor mediante una relación `@ManyToOne`.
-    * Atributos: `numeroFactura`, `fecha`, `importe` y `cod_Proveedor` que actua de `Foreing Key` para establecer la relación con una relación muchos a uno con la entidad `Proveeedor`.
+    * Atributos: `numeroFactura`, `fecha`, `importe` y `cod_Proveedor` que actua de `Foreign Key` para establecer la relación con una relación muchos a uno con la entidad `Proveedor`.
 
 ---
 
