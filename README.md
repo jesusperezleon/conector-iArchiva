@@ -112,8 +112,51 @@ Se ha implementado un DTO para evitar la exposición directa de las entidades JP
 Se incluye un segundo proyecto que actúa como **Cliente REST** para validar la integración.
 
 ### Pruebas realizadas:
-* **Unitarias (Datos Correctos):** Verificación de flujo positivo, recuperación de proveedores existentes y filtrado correcto de facturas en rangos válidos.
-* **Unitarias (Datos Incorrectos):** Validación de comportamiento ante CIFs inexistentes, formatos de fecha erróneos o parámetros obligatorios ausentes.
+
+### 1. Tests Unitarios (Service Layer con Mockito)
+Estas pruebas validan la lógica del cliente REST de forma aislada, simulando las respuestas del servidor.
+
+#### **Servicio de Proveedores (`ProveedorServiceTest`)**
+* **Test 1.** CIF válido y existente: el mock devuelve el proveedor esperado.
+* **Test 2.** CIF inexistente: el mock lanza 404 Not Found.
+* **Test 3.** CIF con formato inválido: el mock lanza 400 Bad Request.
+* **Test 4.** CIF vacío: el servicio lanza excepción antes de llamar a la API.
+
+#### **Servicio de Facturas (`FacturaServiceTest`)**
+* **Test 1.** CIF válido sin fechas: retorna facturas del proveedor.
+* **Test 2.** CIF inexistente: lanza 404 Not Found.
+* **Test 3.** CIF con formato inválido: lanza 400 Bad Request.
+* **Test 4.** CIF vacío: lanza IllegalArgumentException sin llamar al servidor.
+* **Test 5.** CIF nulo: lanza IllegalArgumentException sin llamar al servidor.
+* **Test 6.** CIF válido con ambas fechas correctas: retorna facturas en el rango.
+* **Test 7.** Solo fechaDesde: retorna facturas desde esa fecha.
+* **Test 8.** Solo fechaHasta: retorna facturas hasta esa fecha.
+* **Test 9.** Formato de fechaDesde inválido: lanza IllegalArgumentException sin llamar al servidor.
+* **Test 10.** Formato de fechaHasta inválido: lanza IllegalArgumentException sin llamar al servidor.
+* **Test 11.** fechaDesde posterior a fechaHasta: lanza IllegalArgumentException sin llamar al servidor.
+
+---
+
+### 2. Tests de Integración (`@SpringBootTest`)
+Estas pruebas validan la comunicación real entre el cliente y el servidor, verificando el flujo completo de datos.
+
+#### **Integración de Proveedores (`ProveedorServiceIT`)**
+* **Test 1.** CIF Válido y existente: Retorna datos del proveedor.
+* **Test 2.** CIF Válido pero inexistente: Retorna 404 Not Found.
+* **Test 3.** CIF con formato inválido: Retorna 400 Bad Request.
+* **Test 4.** CIF vacío: Retorna 404 por ruta inexistente (validación local).
+
+#### **Integración de Facturas (`FacturaServiceIT`)**
+* **Test 1.** CIF válido sin fechas: retorna facturas.
+* **Test 2.** CIF inexistente: retorna 404.
+* **Test 3.** CIF con formato inválido: retorna 400.
+* **Test 4.** CIF vacío: lanza IllegalArgumentException.
+* **Test 5.** CIF válido con ambas fechas correctas: retorna facturas.
+* **Test 6.** Solo fechaDesde: retorna facturas desde esa fecha.
+* **Test 7.** Solo fechaHasta: retorna facturas hasta esa fecha.
+* **Test 8.** Formato fechaDesde inválido: lanza IllegalArgumentException.
+* **Test 9.** Formato fechaHasta inválido: lanza IllegalArgumentException.
+* **Test 10.** fechaDesde posterior a fechaHasta: lanza IllegalArgumentException.
 
 ### Ejecución de los tests:
 Para ejecutar la suite de pruebas desde la terminal:
