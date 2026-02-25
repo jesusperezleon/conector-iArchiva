@@ -102,7 +102,7 @@ Se ha implementado un DTO para evitar la exposición directa de las entidades JP
 * **Descripción:** Recupera los datos básicos de un proveedor.
 * **Salida:** JSON con `nombre`, `email`, `cif` y `codigoInterno`.
 
-### 2. Consulta de Facturas por Rango
+### 2. Consulta de Facturas por Fechas
 * **URL:** `GET /facturas`
 * **Parámetros:**
     * `cif` - **Obligatorio**.
