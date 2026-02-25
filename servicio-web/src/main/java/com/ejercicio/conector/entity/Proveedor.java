@@ -13,7 +13,6 @@ public class Proveedor {
     private Long codProveedor;
 
     @Column(name = "cif", nullable = false, unique = true)
-    @JsonProperty("CIF")
     private String cif;
 
     @Column(name = "nombre", nullable = false)

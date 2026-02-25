@@ -1,7 +1,6 @@
 package com.ejercicio.conector.service;
 
 import com.ejercicio.conector.dtos.FacturaDTO;
-import com.ejercicio.conector.dtos.FacturasProveedorDTO;
 import com.ejercicio.conector.exception.LogicaErrorException;
 import com.ejercicio.conector.entity.Factura;
 import com.ejercicio.conector.entity.Proveedor;
@@ -22,7 +21,7 @@ public class FacturasService {
     @Autowired
     private ProveedorService proveedorService;
 
-    public FacturasProveedorDTO getFacturas(String cif, String fechaDesdeStr , String fechaHastaStr ){
+    public List<FacturaDTO> getFacturas(String cif, String fechaDesdeStr , String fechaHastaStr ){
 
         //Obtemos el proveedor a partir del CIF
         Proveedor proveedor = proveedorService.getProveedor(cif);
@@ -47,18 +46,12 @@ public class FacturasService {
         // Obtenemos las facturas
         List<Factura> facturas = facturaRepository.findAllByFiltros(proveedor.getCodProveedor(), fechaDesde, fechaHasta);
 
-        return new FacturasProveedorDTO(
-            proveedor.getCodProveedor(),
-            proveedor.getCif(),
-            proveedor.getNombre(),
-            proveedor.getEmail(),
-            facturas.stream().map(factura ->
+        return facturas.stream().map(factura ->
                 new FacturaDTO(
                         factura.getCodFactura(),
                         factura.getImporte(),
                         factura.getFecha()
                 )
-            ).collect(Collectors.toList())
-        );
+        ).collect(Collectors.toList());
     }
 }
