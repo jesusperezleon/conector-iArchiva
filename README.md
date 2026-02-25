@@ -88,14 +88,14 @@ Se ha implementado un DTO para evitar la exposición directa de las entidades JP
 ### 1. Consulta de Proveedor
 * **URL:** `GET /proveedores/{cif}`
 * **Descripción:** Recupera los datos básicos de un proveedor.
-* **Salida:** JSON con `nombre`, `email`, `CIF` y `codigoInterno`.
+* **Salida:** JSON con `nombre`, `email`, `cif` y `codigoInterno`.
 
 ### 2. Consulta de Facturas por Rango
 * **URL:** `GET /facturas`
 * **Parámetros:**
     * `cif` - **Obligatorio**.
-    * `fechaDesde` - Opcional.
-    * `fechaHasta` - Opcional.
+    * `fechaDesde` - Opcional. El formato debe ser YYYY-MM-DD.
+    * `fechaHasta` - Opcional. El formato debe ser YYYY-MM-DD.
 * **Lógica:** Segun los paremetros que se introduzcan se devuelven distintos resultados:
   
     | Parámetros Enviados | Resultado de la Consulta |
