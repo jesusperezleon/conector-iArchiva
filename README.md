@@ -50,14 +50,17 @@ El proyecto sigue un patrón de **Arquitectura por Capas** (Layered Architecture
 
 ### Capas del Proyecto:
 
-1.  **Capa de Presentación (Controllers):** * Expone los endpoints REST.
+1.  **Capa de Presentación (Controllers):**
+    * Expone los endpoints REST.
     * Gestiona las peticiones HTTP y valida los parámetros de entrada.
+3.  **Capa de Negocio (Services):**
+    * Contiene la lógica principal del conector.
     * Transforma las Entidades en **DTOs** para asegurar que solo se expone la información necesaria.
-2.  **Capa de Negocio (Services):** * Contiene la lógica principal del conector.
-    * Implementa la lógica de filtrado dinámico para las facturas (manejo de rangos de fechas opcionales).
-3.  **Capa de Persistencia (Repositories):** * Utiliza **Spring Data JPA** para la comunicación con la base de datos.
+5.  **Capa de Persistencia (Repositories):**
+    * Utiliza **Spring Data JPA** para la comunicación con la base de datos.
     * Implementa consultas derivadas para filtrar por el CIF del proveedor y el rango temporal.
-4.  **Capa de Modelo (Entities/DTOs):** * **Entities:** Mapeo de tablas mediante Hibernate (Proveedor y Factura).
+7.  **Capa de Modelo (Entities/DTOs):**
+    * **Entities:** Mapeo de tablas mediante Hibernate (Proveedor y Factura).
     * **DTOs:** Objetos de transferencia para desacoplar la API de la estructura interna.
 
 ---
@@ -66,10 +69,10 @@ El proyecto sigue un patrón de **Arquitectura por Capas** (Layered Architecture
 
 La persistencia se gestiona mediante una base de datos **H2** en memoria, ideal para entornos de prueba y desarrollo rápido.
 
-* **Proveedor:** Entidad principal identificada por su **CIF**. 
-    * Atributos: `nombre`, `email`, `codigoInterno`.
+* **Proveedor:** Entidad principal identificada por su **Codigo de Proveedor**. 
+    * Atributos: `nombre`, `email`, `codigoInterno` y `CIF`.
 * **Factura:** Entidad relacionada con un proveedor mediante una relación `@ManyToOne`.
-    * Atributos: `numeroFactura`, `fecha`, `importe`.
+    * Atributos: `numeroFactura`, `fecha`, `importe` y `cod_Proveedor` que actua de `Foreing Key` para establecer la relación con una relación muchos a uno con la entidad `Proveeedor`  .
 
 **Relación:** Un Proveedor puede tener asociadas **N** Facturas (1:N).
 
