@@ -135,6 +135,12 @@ Estas pruebas validan la lógica del cliente REST de forma aislada, simulando la
 * **Test 10.** Formato de fechaHasta inválido: lanza IllegalArgumentException sin llamar al servidor.
 * **Test 11.** fechaDesde posterior a fechaHasta: lanza IllegalArgumentException sin llamar al servidor.
 
+### Ejecución de los tests unitarios:
+Para ejecutar los test unitarios desde la terminal, abra el proyecto `cliente-rest` y desde la raíz ejecute el siguinte comando:
+```bash
+./gradlew test
+```
+
 ---
 
 ### 2. Tests de Integración (`@SpringBootTest`)
@@ -158,7 +164,19 @@ Estas pruebas validan la comunicación real entre el cliente y el servidor, veri
 * **Test 9.** Formato fechaHasta inválido: lanza IllegalArgumentException.
 * **Test 10.** fechaDesde posterior a fechaHasta: lanza IllegalArgumentException.
 
-### Ejecución de los tests:
-Para ejecutar la suite de pruebas desde la terminal:
+### Ejecución de los tests de integración:
+Para ejecutar los test de integracion desde la terminal, de igual manera abra la raiz del proyecto y ejecute el siguiente comando:
 ```bash
-./gradlew test
+./gradlew integrationTest
+```
+
+Para ejecutar ambos test de forma simultanea, ejecute el siguiente comando:
+```bash
+./gradlew test integrationTest
+```
+
+Para ver los resultados de ambos test, ejecute desde la terminal los dos siguientes comandos para ver en formato web los resultado de los test unitarios y de integración respectivamente:
+```bash
+xdg-open build/reports/tests/test/index.html
+xdg-open build/reports/tests/integrationTest/index.html
+```
