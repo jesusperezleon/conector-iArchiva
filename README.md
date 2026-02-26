@@ -97,12 +97,13 @@ El servicio quedará disponible en:
 http://localhost:8080
 ```
 
-### Base de datos 
-La base de datos H2 en memoria por lo que no requiere instalación adicional. Para poder acceder a la consola H2:
-    1. Levanta Servicio-Web 
-    2. La consola estará disponible en: http://localhost:8080/h2-console
+### Base de datos
 
-Para poder acceder:
+La base de datos es H2 en memoria, por lo que no requiere instalación adicional.
+
+Para acceder a la consola H2:
+    1. Levanta el Servicio-Web
+    2. Accede a: http://localhost:8080/h2-console
 
 | Campo      | Valor                  |
 |------------|------------------------|
