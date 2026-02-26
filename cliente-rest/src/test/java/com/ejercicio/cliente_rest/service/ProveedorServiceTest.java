@@ -33,7 +33,7 @@ class ProveedorServiceTest {
     @Test
     @DisplayName("Test unitario 1. CIF válido y existente: el mock devuelve el proveedor esperado")
     void test1_CifValidoYExistente() {
-        // ARRANGE: preparamos la respuesta simulada
+
         String cif = "A12345678";
         ProveedorDTO proveedorEsperado = new ProveedorDTO();
         proveedorEsperado.setCIF(cif);
@@ -57,7 +57,6 @@ class ProveedorServiceTest {
                 .getForObject(BASE_URL + "/proveedores/" + cif, ProveedorDTO.class);
     }
 
-    // Simulamos que el servidor devuelve 404
     @Test
     @DisplayName("Test unitario 2. CIF inexistente: el mock lanza 404 Not Found")
     void test2_CifInexistente() {
@@ -69,7 +68,6 @@ class ProveedorServiceTest {
                 ProveedorDTO.class))
                 .thenThrow(new HttpClientErrorException(HttpStatus.NOT_FOUND));
 
-        // ACT & ASSERT
         HttpClientErrorException ex = assertThrows(
                 HttpClientErrorException.class,
                 () -> proveedorService.obtenerPorCif(cifFalso)
@@ -90,7 +88,6 @@ class ProveedorServiceTest {
                 ProveedorDTO.class))
                 .thenThrow(new HttpClientErrorException(HttpStatus.BAD_REQUEST));
 
-        // ACT & ASSERT
         HttpClientErrorException ex = assertThrows(
                 HttpClientErrorException.class,
                 () -> proveedorService.obtenerPorCif(cifInvalido)
@@ -102,8 +99,7 @@ class ProveedorServiceTest {
     @Test
     @DisplayName("Test unitario 4. CIF vacío: el servicio lanza excepción antes de llamar a la API")
     void test4_CifVacio() {
-        // En un test unitario podemos probar la lógica de validación del propio cliente
-        // Si el servicio valida el CIF localmente, nunca llega a llamar al RestTemplate
+
         String cifVacio = "";
 
         assertThrows(IllegalArgumentException.class,

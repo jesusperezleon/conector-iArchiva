@@ -35,27 +35,24 @@ class FacturaServiceTest {
         facturaService = new FacturaService(restTemplate, BASE_URL);
     }
 
-    // Metodo para contruir la respuesta del servidor
     private void mockRespuesta(String url, List<FacturaDTO> facturas) {
         when(restTemplate.exchange(
-                eq(BASE_URL + "/facturas" + url),   // ← eq() en lugar de valor directo
+                eq(BASE_URL + "/facturas" + url),
                 eq(HttpMethod.GET),
                 eq(null),
                 any(ParameterizedTypeReference.class)))
                 .thenReturn(ResponseEntity.ok(facturas));
     }
 
-    // Metodo para simular error del servidor
     private void mockError(String url, HttpStatus status) {
         when(restTemplate.exchange(
-                eq(BASE_URL + "/facturas" + url),   // ← eq() en lugar de valor directo
+                eq(BASE_URL + "/facturas" + url),
                 eq(HttpMethod.GET),
                 eq(null),
                 any(ParameterizedTypeReference.class)))
                 .thenThrow(new HttpClientErrorException(status));
     }
 
-    // Metodo para construir lista de facturas
     private List<FacturaDTO> buildFacturas(Long... numeros) {
         return Arrays.stream(numeros).map(num -> {
             FacturaDTO f = new FacturaDTO();
@@ -65,7 +62,7 @@ class FacturaServiceTest {
         }).collect(java.util.stream.Collectors.toList());
     }
 
-    // --- Casos con CIF ---
+    //Casos con CIF
 
     @Test
     @DisplayName("Test unitario 1. CIF válido sin fechas: retorna facturas del proveedor")
@@ -127,7 +124,7 @@ class FacturaServiceTest {
         verifyNoInteractions(restTemplate);
     }
 
-    // --- Casos con fechas ---
+    //Casos con fechas
 
     @Test
     @DisplayName("Test unitario 6. CIF válido con ambas fechas correctas: retorna facturas en el rango")

@@ -31,7 +31,6 @@ public class ProveedorService {
     private final RestTemplate restTemplate;
     private final String baseUrl;
 
-    // Inyectamos RestTemplate por constructor: esto nos permite mockear en tests
     public ProveedorService(RestTemplate restTemplate,
                             @Value("http://localhost:8080") String baseUrl) {
         this.restTemplate = restTemplate;

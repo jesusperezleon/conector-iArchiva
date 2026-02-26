@@ -12,7 +12,7 @@ public interface FacturaRepository extends JpaRepository<Factura, Long> {
 
     @Query(
             "SELECT f FROM Factura f " +
-                    "WHERE (:codProveedor IS NULL OR f.proveedor.codProveedor = :codProveedor) " +
+                    "WHERE f.proveedor.codProveedor = :codProveedor " +
                     "AND (:fechaDesde IS NULL OR f.fecha >= :fechaDesde) " +
                     "AND (:fechaHasta IS NULL OR f.fecha <= :fechaHasta)"
     )
