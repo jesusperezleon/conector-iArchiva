@@ -241,7 +241,7 @@ Para ejecutar los test de integración desde la terminal, primero de levantar el
 ./gradlew integrationTest
 ```
 > [!WARNING]
-> El servidor debe de estar levantado para realizar las pruebas
+> El servidor debe de estar levantado para realizar las pruebas de integración
 ---
 
 Para ejecutar ambos test de forma simultanea, ejecute el siguiente comando:
