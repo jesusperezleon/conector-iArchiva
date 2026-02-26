@@ -71,11 +71,13 @@ cd conector-iArchiva
 Para compilar el proyecto se debe ejecutar el siguiente comando en la terminal desde la raíz del proyecto.
 #### Linux / macOS
 ```bash
+cd servicio-web
 ./gradlew build
 ```
 
 #### Windows (CMD o PowerShell)
 ```bash
+cd servicio-web
 gradlew.bat build
 ```
 
@@ -97,7 +99,20 @@ El servicio quedará disponible en:
 http://localhost:8080
 ```
 
-Base de datos: H2 en memoria (no requiere instalación adicional).
+### Base de datos
+
+La base de datos es H2 en memoria, por lo que no requiere instalación adicional.
+
+Para acceder a la consola H2:
+
+1. Levanta el Servicio-Web
+2. Accede a: http://localhost:8080/h2-console
+
+| Campo      | Valor                  |
+|------------|------------------------|
+| JDBC URL   | jdbc:h2:file:./data/mydb    |
+| Usuario    | sa                     |
+| Contraseña | (vacía)                |
 
 ---
 
@@ -194,7 +209,18 @@ Estas pruebas validan la lógica del cliente REST de forma aislada, simulando la
 * **Test 11.** fechaDesde posterior a fechaHasta: lanza IllegalArgumentException sin llamar al servidor.
 
 ### Ejecución de los tests unitarios:
-Para ejecutar los test unitarios desde la terminal, abra el proyecto `cliente-rest` y desde la raíz ejecute el siguiente comando:
+Primero debe de acceder al protecto del cliente y compilarlo de igual manera que con el servicio, para ello desde la terminal abra el proyecto `cliente-rest`y ejecute el siguiente comando:
+#### Linux / macOS
+```bash
+./gradlew build
+```
+
+#### Windows (CMD o PowerShell)
+```bash
+gradlew.bat build
+```
+
+A contunuación, para ejecutar los test unitarios ejecute el siguiente comando:
 ```bash
 ./gradlew test
 ```
@@ -223,12 +249,12 @@ Estas pruebas validan la comunicación real entre el cliente y el servidor, veri
 * **Test 10.** fechaDesde posterior a fechaHasta: lanza IllegalArgumentException.
 
 ### Ejecución de los tests de integración:
-Para ejecutar los test de integración desde la terminal, primero de levantar el servidor ya que el cliente intentará comunicarse con el. Después y de igual manera, abra la raíz del proyecto y ejecute el siguiente comando:
+Para ejecutar los test de integración desde la terminal, primero debe levantar el servidor ya que el cliente intentará comunicarse con él. Después y de igual manera, abra la raíz del proyecto `cliente-rest` y ejecute el siguiente comando:
 ```bash
 ./gradlew integrationTest
 ```
 > [!WARNING]
-> El servidor debe de estar levantado para realizar las pruebas
+> El servidor debe de estar levantado para realizar las pruebas de integración
 ---
 
 Para ejecutar ambos test de forma simultanea, ejecute el siguiente comando:
@@ -236,8 +262,8 @@ Para ejecutar ambos test de forma simultanea, ejecute el siguiente comando:
 ./gradlew test integrationTest
 ```
 
-Para ver los resultados de ambos test, ejecute desde la terminal los dos siguientes comandos para ver en formato web los resultado de los test unitarios y de integración respectivamente:
+Para ver los resultados de los test unitarios y de integración, puede acceder a los siguiente archivos respectivamente:
 ```bash
-xdg-open build/reports/tests/test/index.html
-xdg-open build/reports/tests/integrationTest/index.html
+build/reports/tests/test/index.html
+build/reports/tests/integrationTest/index.html
 ```
