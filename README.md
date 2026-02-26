@@ -97,12 +97,18 @@ El servicio quedará disponible en:
 http://localhost:8080
 ```
 
-Base de datos: H2 en memoria (no requiere instalación adicional).
-Consola H2 disponible en: http://localhost:8080/h2-console
+###Base de datos 
+La base de datos H2 en memoria por lo que no requiere instalación adicional. Para poder acceder a la consola H2:
+    1. Levanta Servicio-Web 
+    2. La consola estará disponible en: http://localhost:8080/h2-console
 
-- JDBC URL: jdbc:h2:mem:testdb
-- Usuario: sa
-- Contraseña: (vacía)
+Para poder acceder:
+
+| Campo      | Valor                  |
+|------------|------------------------|
+| JDBC URL   | jdbc:h2:file:./data/mydb    |
+| Usuario    | sa                     |
+| Contraseña | (vacía)                |
 
 ---
 
