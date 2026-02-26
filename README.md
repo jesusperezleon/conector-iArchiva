@@ -103,8 +103,8 @@ La base de datos es H2 en memoria, por lo que no requiere instalación adicional
 
 Para acceder a la consola H2:
 
-    1. Levanta el Servicio-Web
-    2. Accede a: http://localhost:8080/h2-console
+1. Levanta el Servicio-Web
+2. Accede a: http://localhost:8080/h2-console
 
 | Campo      | Valor                  |
 |------------|------------------------|
